@@ -43,7 +43,7 @@ for _,t in tk.iterrows():
     for cid in re.split(r'[;,]',t['Associated Contact IDs']):
         if cid.strip(): up_by_c.setdefault(cid.strip(),[]).append(t)
 BLUE={'new','in-progress','in progress','follow up','connected','qualified for sales discovery call'}
-BROWN={'not a fit','cancelled','canceled','unqualified','attempted to contact','bad timing','no response','no show','cold lead','long term nurture','invalid contact info'}
+BROWN={'not a fit','cancelled','canceled','unqualified','attempted to contact','bad timing','no response','no show','cold lead','long term nurture','invalid contact info','do not contact'}
 def info(i):
     r=hs.loc[i]; cid=r['Record ID']
     tids=[x.strip() for x in r['Associated Task IDs'].split(';') if x.strip()]
@@ -54,7 +54,7 @@ def info(i):
     col=''
     if ds and 'closed lost' not in ds.lower(): col='Yellow'
     elif not ds and utm and ls.lower() in BLUE and (up_ids or prev): col='Blue'
-    elif not ds and ls.lower() in BROWN: col='Brown'
+    elif not ds and utm and ls.lower() in BROWN: col='Brown'
     nxt=min([t['Due date'] for t in ups],default='')
     return dict(rid=cid,ls=ls,utm=utm,ds=ds,nup=len(up_ids),nprev=len(prev),nxt=nxt,
                 upt='; '.join(t['Task Title'].strip() for t in ups),color=col,
@@ -161,7 +161,7 @@ for s in ['August','July']:
                 why=[]
                 if I['ds'] and 'closed lost' in I['ds'].lower(): why.append(f"deal stage is {I['ds']}")
                 if not I['ds']:
-                    if I['ls'].lower() in BLUE and not I['utm']: why.append('utm_campaign is blank')
+                    if not I['utm']: why.append('utm_campaign is blank')
                     if I['ls'].lower() in BLUE and not (I['nup'] or I['nprev']): why.append('no upcoming or previous tasks')
                     if I['ls'].lower() not in BLUE|BROWN: why.append(f"lead status '{I['ls']}' is not in the Blue or Brown lists")
                 reasons.append('In HubSpot but does not meet colour criteria: '+'; '.join(why))
@@ -196,7 +196,7 @@ ws.freeze_panes='C2'
 lg=wb.create_sheet('Legend')
 L=[['Colour','Rule applied'],
  ['Blue','utm_campaign not blank AND deal stage blank AND lead status in {New, In-Progress, Follow Up, Connected, Qualified for Sales Discovery Call} AND contact has an upcoming task (from the Upcoming Tasks export) or, failing that, a previous task'],
- ['Brown','utm_campaign ignored (any value, including blank) AND deal stage blank AND lead status in {Not a Fit, Cancelled, Unqualified, Attempted to Contact, Bad Timing, No Response, No Show, Cold Lead, Long Term Nurture, Invalid Contact Info} (no task requirement)'],
+ ['Brown','utm_campaign not blank (speed_dating or any other value) AND deal stage blank AND lead status in {Not a Fit, Cancelled, Unqualified, Attempted to Contact, Bad Timing, No Response, No Show, Cold Lead, Long Term Nurture, Invalid Contact Info, Do Not Contact} (tasks ignored)'],
  ['Yellow','Current Active Deal Stage is populated and is not a Closed Lost stage'],
  ['None','No colour: not in HubSpot, or in HubSpot but fails the rules above (see the Not Matched & Duplicates tab for the reason)'],
  [],['Matching','Source Work Email vs HubSpot Email + Additional email addresses; then Mobile Phone (last 10 digits); then the match of another row in the workbook with the same LinkedIn URL/email; then exact first+last name, accepted only when verified (HubSpot record is the missing-email import placeholder, carries this list\'s campaign utm_campaign, or its email domain matches the contact\'s company/domain); unverified name hits are listed as possible matches, uncoloured'],
