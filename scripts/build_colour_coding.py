@@ -2,9 +2,11 @@ import pandas as pd,re
 U='/root/.claude/uploads/1df32d6b-5e1e-5686-a9d6-b7cbb640ca98/'
 hs=pd.read_excel(U+'82ba3d4b-hubspot-crm-exports-all-contacts-2026-09-23-2.xlsx',dtype=str).fillna('')
 tk=pd.read_excel(U+'76b7ecde-hubspot-crm-exports-upcoming-task-2026-09-23.xlsx',dtype=str).fillna('')
-x=pd.ExcelFile(U+'ddd16ab5-Get_Levrg_-_Sphere_of_Influence.xlsx')
+import sys
+SRC,PREFIX,OUT=(sys.argv[1:4] if len(sys.argv)>3 else (U+'ddd16ab5-Get_Levrg_-_Sphere_of_Influence.xlsx','SOI','/home/user/Hubspot/SOI_July_August_HubSpot_Colour_Coded.xlsx'))
+x=pd.ExcelFile(SRC)
 soi={}
-for s in ['SOI July','SOI August']:
+for s in [PREFIX+' July',PREFIX+' August']:
     d=pd.read_excel(x,s,dtype=str).fillna('')
     d=d[[c for c in d.columns if not c.startswith('Unnamed')]]
     d=d[(d.apply(lambda r:''.join(r).strip(),axis=1)!='')]
@@ -51,7 +53,11 @@ def match(r):
     elif P: prim=max(P,key=lambda i:hs.loc[i,'Create Date']); how='Phone'
     else:
         N=nmap.get(nm(r['First Name'])+'|'+nm(r['Last Name']),set())
-        if len(N)==1 and nm(r['Last Name']): prim=next(iter(N)); how='Name'
+        if len(N)==1 and nm(r['Last Name']):
+            prim=next(iter(N))
+            # only trust a name-only hit on the import's placeholder record; a real, different email is likely another person
+            if not hs.loc[prim,'Email'].startswith('missing-email-'): return None,'Possible',[prim]
+            how='Name'
         else: return None,'',[]
         E=N
     # other records for same person: email/phone hits whose name matches, excluding shared-phone colleagues
@@ -68,28 +74,40 @@ def clean(v):
     if re.fullmatch(r'=\+?\d+',v): v=v[1:]
     return v
 # cross-tab duplicates (same person in July and August)
-def pkey(r): return ph(r.get('Mobile Phone','')) or r.get('Work Email','').strip().lower() or nm(r['First Name'])+nm(r['Last Name'])
-keys={s:[pkey(r) for _,r in d.iterrows()] for s,d in soi.items()}
+def li(r): return re.sub(r'^https?://(www\.)?|/$','',(r.get('LinkedIn Profile URL','') or r.get('Linkedin URL','')).strip().lower())
+def pkey(r):
+    fn=nm(r['First Name'].split()[0]) if r['First Name'].strip() else ''
+    k={('li',li(r)),('em',r.get('Work Email','').strip().lower()),('ph',ph(r.get('Mobile Phone',''))+'|'+fn)}
+    return {x for x in k if x[1] and not x[1].startswith('|')}
+def fullkey(r):
+    k=pkey(r); m=match(r)[0]
+    if m is not None: k.add(('hs',hs.loc[m,'Record ID']))
+    return k
+keys={s:[fullkey(r) for _,r in d.iterrows()] for s,d in soi.items()}
 HSCOLS=['HubSpot Match','Matched By','HubSpot Record ID','HubSpot Name','HubSpot Email','Lead Status','utm_campaign','Current Active Deal Stage','Upcoming Tasks','Next Task Due','Upcoming Task Title(s)','Previous Tasks','Colour Assigned','Notes']
 wb=Workbook(); wb.remove(wb.active)
 review=[]; summary={}
-for s in ['SOI August','SOI July']:
-    d=soi[s]; ws=wb.create_sheet(s.replace('SOI ','')); src=list(d.columns)
+for s in [PREFIX+' August',PREFIX+' July']:
+    d=soi[s]; ws=wb.create_sheet(s.replace(PREFIX+' ','')); src=list(d.columns)
     hdr=src+HSCOLS; ws.append(hdr)
     for c in range(1,len(hdr)+1):
         ws.cell(1,c).fill=HDR; ws.cell(1,c).font=HF
     cnt={'Blue':0,'Brown':0,'Yellow':0,'':0}
-    for n,(_,r) in enumerate(d.iterrows()):
+    for n,(idx,r) in enumerate(d.iterrows()):
         prim,how,others=match(r); notes=[]; reasons=[]
-        other=[t for t in soi if t!=s and keys[s][n] in keys[t]]
-        dup_in=[t for t in soi if t==s and keys[s].count(keys[s][n])>1]
+        other=[t for t in soi if t!=s and any(keys[s][n]&k for k in keys[t])]
+        dup_in=[j+2 for j,k in enumerate(keys[s]) if j!=n and keys[s][n]&k]
         if prim is None:
             I=dict(rid='',hsname='',hsemail='',ls='',utm='',ds='',nup='',nxt='',upt='',nprev='',color='')
-            reasons.append('Not found in HubSpot (no email / phone / name match)')
+            if how=='Possible':
+                q=hs.loc[others[0]]; others=[]
+                reasons.append(f"Not found in HubSpot by email/phone. Possible name match with a different email: {q['Record ID']} ({q['First Name']} {q['Last Name']}, {q['Email']}, {q['Lead Status']}) - please verify")
+                how=''
+            else: reasons.append('Not found in HubSpot (no email / phone / name match)')
         else:
             I=info(prim)
-            if how=='Name': notes.append('Matched on name only (no email/phone in SOI sheet) - please verify')
-            if how=='Phone' and r.get('Work Email','').strip(): notes.append(f"SOI email {r['Work Email'].strip()} not in HubSpot; matched by phone")
+            if how=='Name': notes.append('Matched on name only (email/phone not in HubSpot; HubSpot record is the import placeholder) - please verify')
+            if how=='Phone' and r.get('Work Email','').strip(): notes.append(f"Source email {r['Work Email'].strip()} not in HubSpot; matched by phone")
             if not I['color']:
                 why=[]
                 if I['ds'] and 'closed lost' in I['ds'].lower(): why.append(f"deal stage is {I['ds']}")
@@ -101,8 +119,8 @@ for s in ['SOI August','SOI July']:
                 reasons.append('In HubSpot but does not meet colour criteria: '+'; '.join(why))
         if others:
             reasons.append('Duplicate in HubSpot: also matches '+'; '.join(f"{hs.loc[i,'Record ID']} ({hs.loc[i,'First Name']} {hs.loc[i,'Last Name']}, {hs.loc[i,'Email']}, {hs.loc[i,'Lead Status']}{', '+hs.loc[i,'Current Active Deal Stage'] if hs.loc[i,'Current Active Deal Stage'] else ''})" for i in others))
-        if other: reasons.append(f"Duplicate: same contact also appears in the {' & '.join(t.replace('SOI ','') for t in other)} tab")
-        if dup_in: reasons.append('Duplicate: appears more than once in this tab')
+        if other: reasons.append(f"Duplicate: same contact also appears in the {' & '.join(t.replace(PREFIX+' ','') for t in other)} tab")
+        if dup_in: reasons.append('Duplicate: same contact appears more than once in this tab (rows '+', '.join(map(str,dup_in))+')')
         allnotes='; '.join(notes+[x for x in reasons if x.startswith('Duplicate')])
         row=[clean(r[c]) for c in src]+['Yes' if prim is not None else 'No',how,I['rid'],I['hsname'],I['hsemail'],I['ls'],I['utm'],I['ds'],I['nup'],I['nxt'],I['upt'],I['nprev'],I['color'] or 'None',allnotes]
         ws.append(row); cnt[I['color']]+=1
@@ -110,7 +128,7 @@ for s in ['SOI August','SOI July']:
             f=PatternFill('solid',fgColor=FILL[I['color']])
             for c in range(1,len(hdr)+1): ws.cell(ws.max_row,c).fill=f
         if reasons:
-            review.append([s.replace('SOI ',''),n+2,r['First Name'],r['Last Name'],r.get('Job Title',''),r.get('Work Email',''),clean(r.get('Mobile Phone','')),r.get('LinkedIn Profile URL',''),r.get('Company',''),I['rid'],I['ls'],I['utm'],I['ds'],I['nup'],I['nprev'],I['color'] or 'None',' | '.join(reasons)])
+            review.append([s.replace(PREFIX+' ',''),n+2,r['First Name'],r['Last Name'],r.get('Job Title',''),r.get('Work Email',''),clean(r.get('Mobile Phone','')),(r.get('LinkedIn Profile URL','') or r.get('Linkedin URL','')),r.get('Company',''),I['rid'],I['ls'],I['utm'],I['ds'],I['nup'],I['nprev'],I['color'] or 'None',' | '.join(reasons)])
     summary[s]=cnt
     for c in range(1,len(hdr)+1):
         h=hdr[c-1]; ws.column_dimensions[get_column_letter(c)].width=60 if h in('AI Research','Headline','Notes','Upcoming Task Title(s)') else 22
@@ -133,16 +151,16 @@ L=[['Colour','Rule applied'],
  ['Brown','utm_campaign not blank AND deal stage blank AND lead status in {Not a Fit, Cancelled, Unqualified} AND contact has a previous task'],
  ['Yellow','Current Active Deal Stage is populated and is not a Closed Lost stage'],
  ['None','No colour: not in HubSpot, or in HubSpot but fails the rules above (see the Not Matched & Duplicates tab for the reason)'],
- [],['Matching','SOI Work Email vs HubSpot Email + Additional email addresses; then Mobile Phone (last 10 digits); then exact first+last name (only when unique)'],
+ [],['Matching','Source Work Email vs HubSpot Email + Additional email addresses; then Mobile Phone (last 10 digits); then exact first+last name (only when unique AND the HubSpot record is the missing-email import placeholder; other name hits are listed as possible matches, uncoloured)'],
  ['Upcoming task','Contact ID appears in the Upcoming Tasks export'],['Previous task','Task IDs on the HubSpot contact that are not in the Upcoming Tasks export'],
  [],['Tab','Blue','Brown','Yellow','No colour']]
-for s,c in summary.items(): L.append([s.replace('SOI ',''),c['Blue'],c['Brown'],c['Yellow'],c['']])
+for s,c in summary.items(): L.append([s.replace(PREFIX+' ',''),c['Blue'],c['Brown'],c['Yellow'],c['']])
 for r in L: lg.append(r)
 for k,v in FILL.items():
     for row in lg.iter_rows(min_row=2,max_row=4):
         if row[0].value==k: row[0].fill=PatternFill('solid',fgColor=v)
 lg.column_dimensions['A'].width=16; lg.column_dimensions['B'].width=140
 for c in (lg['A1'],lg['B1'],lg['A7'],lg['A11']): c.font=Font(bold=True)
-out='/home/user/Hubspot/SOI_July_August_HubSpot_Colour_Coded.xlsx'
+out=OUT
 wb.save(out); print(summary, len(review))
-for r in review: print(r[0],r[2],r[3],'|',r[15],'|',r[16][:160])
+
