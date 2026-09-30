@@ -26,8 +26,8 @@
   .wrap{max-width:1100px;margin:0 auto;}
 
   .heading{margin-bottom:28px;}
-  .heading h1{font-size:26px;font-weight:800;color:var(--dark-green);margin:0 0 6px;letter-spacing:-0.01em;line-height:1.2;text-wrap:balance;}
-  .heading p{font-size:14.5px;color:var(--muted);margin:0;line-height:1.55;max-width:68ch;}
+  .heading h1{font-size:18px;font-weight:800;color:var(--dark-green);margin:0 0 8px;letter-spacing:-0.01em;line-height:24px;text-wrap:balance;}
+  .heading p{font-size:16px;color:var(--muted);margin:0;line-height:24px;max-width:68ch;}
 
   .grid{
     display:grid;
@@ -44,14 +44,14 @@
   }
   .form-card{position:sticky;top:24px;}
 
-  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px;}
-  .field label{font-size:13px;font-weight:600;color:var(--black);}
+  .field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+  .field label{font-size:12px;line-height:16px;font-weight:600;color:var(--black);}
   .field input{
-    padding:11px 13px;
+    padding:12px;
     min-height:44px;
-    border-radius:10px;
+    border-radius:12px;
     border:1.5px solid var(--border);
-    font-size:15px;
+    font-size:16px;
     font-family:inherit;
     color:var(--black);
     background:var(--white);
@@ -63,14 +63,14 @@
     box-shadow:0 0 0 3px rgba(81,176,39,0.18);
   }
 
-  .actions{display:flex;flex-direction:column;gap:10px;margin-top:22px;}
+  .actions{display:flex;flex-direction:column;gap:8px;margin-top:24px;}
 
   .btn{
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     padding:12px 16px;
     min-height:44px;
-    font-size:14px;
+    font-size:16px;
     font-weight:700;
     font-family:inherit;
     cursor:pointer;
@@ -84,11 +84,11 @@
   .btn-secondary:hover{background:#ECEEE9;}
 
   .status{
-    font-size:12.5px;
-    min-height:18px;
+    font-size:12px;
+    min-height:16px;
     color:var(--accessible-green);
     font-weight:600;
-    line-height:1.45;
+    line-height:16px;
   }
   .status.error{color:#B3261E;}
 
@@ -99,9 +99,9 @@
     justify-content:space-between;
     gap:12px;
     flex-wrap:wrap;
-    margin-bottom:14px;
+    margin-bottom:16px;
   }
-  .preview-label{font-size:13px;font-weight:600;color:var(--muted);}
+  .preview-label{font-size:12px;font-weight:600;color:var(--muted);}
   .preview-label span{font-weight:500;color:#6b6f68;}
 
   .seg{
@@ -115,13 +115,13 @@
   .seg button{
     display:inline-flex;
     align-items:center;
-    gap:7px;
+    gap:8px;
     min-height:40px;
-    padding:0 14px;
+    padding:0 16px;
     border:0;
     border-radius:8px;
     background:transparent;
-    font:600 13px/1 'Inter',Arial,Helvetica,sans-serif;
+    font:600 12px/16px 'Inter',Arial,Helvetica,sans-serif;
     color:var(--muted);
     cursor:pointer;
     transition:background-color .15s ease, color .15s ease;
@@ -149,39 +149,39 @@
     overflow:hidden;
   }
   .device.mobile{
-    width:395px;
-    padding:10px;
+    width:391px;
+    padding:8px;
     background:var(--black);
     border-radius:40px;
     box-shadow:0 24px 48px -28px rgba(21,21,21,0.55);
   }
-  .device.small{width:340px;}
-  .device.mobile .screen{border-radius:30px;overflow:hidden;background:var(--white);}
+  .device.small{width:336px;}
+  .device.mobile .screen{border-radius:32px;overflow:hidden;background:var(--white);}
 
   .mail-bar{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:8px;
     padding:12px 20px;
     border-bottom:1px solid #EEF0EC;
     font-size:12px;
     color:#6b6f68;
     background:#FAFBF9;
   }
-  .device.mobile .mail-bar{padding:18px 16px 12px;}
-  .mail-bar .dots{display:flex;gap:6px;}
-  .mail-bar .dots i{width:10px;height:10px;border-radius:50%;background:#D9DDD5;display:block;}
+  .device.mobile .mail-bar{padding:16px 16px 12px;}
+  .mail-bar .dots{display:flex;gap:4px;}
+  .mail-bar .dots i{width:8px;height:8px;border-radius:50%;background:#D9DDD5;display:block;}
   .device.mobile .mail-bar .dots{display:none;}
 
   #previewFrame{display:block;width:100%;border:0;height:320px;background:var(--white);}
 
-  .hint{margin-top:12px;font-size:12.5px;color:#6b6f68;line-height:1.5;}
+  .hint{margin-top:12px;font-size:12px;color:#6b6f68;line-height:16px;}
 
   /* Visually hidden copy buffer used by the execCommand fallback */
   .copy-buffer{position:fixed;left:-99999px;top:0;opacity:0;pointer-events:none;}
 
   @media (max-width:1024px){
-    .grid{grid-template-columns:320px minmax(0,1fr);gap:22px;}
+    .grid{grid-template-columns:320px minmax(0,1fr);gap:24px;}
   }
   @media (max-width:900px){
     .grid{grid-template-columns:minmax(0,1fr);}
@@ -189,18 +189,18 @@
   }
   @media (min-width:601px) and (max-width:900px){
     .form-card{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;}
-    .form-card .actions{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap;margin-top:6px;}
+    .form-card .actions{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap;margin-top:8px;}
     .form-card .actions .btn{flex:1 1 0;}
     .form-card .status{flex-basis:100%;}
   }
   @media (max-width:600px){
     body{padding:20px 16px 32px;}
     .heading{margin-bottom:20px;}
-    .heading h1{font-size:22px;}
-    .heading p{font-size:14px;}
-    .card{padding:20px;border-radius:14px;}
+    .heading h1{font-size:18px;}
+    .heading p{font-size:16px;}
+    .card{padding:20px;border-radius:12px;}
     .field input{font-size:16px;} /* prevents iOS zoom-on-focus */
-    .preview-card{padding:14px;border-radius:14px;}
+    .preview-card{padding:16px;border-radius:12px;}
     .preview-head{align-items:flex-start;}
     .seg{width:100%;}
     .seg button{flex:1;justify-content:center;min-height:44px;padding:0 8px;}
@@ -275,7 +275,7 @@
           </div>
         </div>
       </div>
-      <p class="hint">The preview renders in a real inbox-sized frame, so what you see at each size is how the signature reflows for recipients. On phones each row stays on one line and the text, icons and button scale down to fit.</p>
+      <p class="hint">The preview renders in a real inbox-sized frame, so what you see at each size is how the signature reflows for recipients. On phones each row stays on one line: text sizes stay the same, and the icons and spacing tighten to fit.</p>
     </div>
 
   </div>
@@ -326,15 +326,15 @@
   // are embedded images instead, which survive being pasted into a signature box.
   // Images are hosted (not embedded as base64): HubSpot refuses to save a signature
   // with large inline data: images, and Gmail / Outlook strip them on paste too.
-  const ASSET_BASE = "https://raw.githubusercontent.com/SumitGetLevrg/Hubspot/e12d86dfb237de21691b9ed8cfbe695ad1f27a23/email-signatures/assets/";
+  const ASSET_BASE = "https://raw.githubusercontent.com/SumitGetLevrg/Hubspot/14ff6d485c8139758931ac1bfc6e75a89b8bed16/email-signatures/assets/";
   const IC_LINKEDIN = ASSET_BASE + "icon-linkedin.png";
   const IC_FACEBOOK = ASSET_BASE + "icon-facebook.png";
   const IC_INSTAGRAM = ASSET_BASE + "icon-instagram.png";
   const IC_WEBSITE = ASSET_BASE + "icon-website.png";
   const BANNER = ASSET_BASE + "banner-2.jpg";
   const IC_PHONE = ASSET_BASE + "icon-phone.png";
-  const IC_CTA = ASSET_BASE + "cta-book-a-strategy-call.png";
-  const CTA_W = 204, CTA_H = 40;
+  const IC_CTA = ASSET_BASE + "cta-book-a-strategy-call-v2.png";
+  const CTA_W = 164, CTA_H = 32;
 
   function iconImg(data, alt, cls){
     return '<img class="' + cls + '" src="' + data + '" width="32" height="32" alt="' + alt + '" style="display:block;border:0;width:32px;height:32px;" />';
@@ -352,48 +352,40 @@
     return str.replace(/ /g, '&nbsp;');
   }
 
-  // Mobile size tiers. Each row (email | phone and icons | button) always stays on ONE
-  // line; on phones the sizes step down so the row fits inside the given width budget.
+  // Type scale — the same on every screen, only these sizes are used:
+  //   name 18px / 24px · job title 16px / 20px · email & phone 12px / 16px · button label 12px
+  // All spacing is on a 4px grid. On phones the text stays the same size; the icons and
+  // the gaps around the dividers step down instead so each row still fits on one line.
   const TIERS = [
-    { mq: 480, budget: 400, text: 13, name: 22, title: 14, icon: 26, iconGap: 8, preDv: 20, dv: 21,
-      btnFont: 12.5, btnPadV: 9, btnPadX: 14, btnIcon: 13, btnIconGap: 6 },
-    { mq: 430, budget: 346, text: 13, name: 22, title: 14, icon: 25, iconGap: 7, preDv: 20, dv: 21,
-      btnFont: 12.5, btnPadV: 9, btnPadX: 14, btnIcon: 13, btnIconGap: 6 },
-    { mq: 374, budget: 334, text: 12.5, name: 21, title: 13.5, icon: 24, iconGap: 7, preDv: 18, dv: 19,
-      btnFont: 12, btnPadV: 9, btnPadX: 13, btnIcon: 12, btnIconGap: 6 },
-    { mq: 340, budget: 298, text: 12, name: 20, title: 13, icon: 23, iconGap: 6, preDv: 14, dv: 15,
-      btnFont: 11, btnPadV: 8, btnPadX: 11, btnIcon: 12, btnIconGap: 5 },
+    { mq: 430, budget: 340, icon: 24, iconGap: 8, preDv: 20, dv: 21 }, // 375–430px phones
+    { mq: 374, budget: 308, icon: 24, iconGap: 8, preDv: 12, dv: 13 }, // 341–374px (360px Android)
+    { mq: 340, budget: 288, icon: 20, iconGap: 4, preDv: 12, dv: 13 }, // 320–340px small phones
   ];
+  const TEXT = 12;
   const CTA_TEXT = 'Book a Strategy Call';
 
   // CSS for one tier. Widths are calculated from the real email / phone text, so the
   // rows are guaranteed to fit and the two dividers still line up underneath each other.
   function tierCSS(t, rawEmail, rawPhone){
-    const emailW = measureTextPx(rawEmail, 'normal', t.text) + 2;
-    const phoneW = measureTextPx(rawPhone, 'normal', t.text) + 2;
+    const emailW = measureTextPx(rawEmail, 'normal', TEXT) + 2;
+    const phoneW = measureTextPx(rawPhone, 'normal', TEXT) + 2;
     const iconsW = t.icon * 4 + t.iconGap * 3;
-    const ctaW = t.btnPadX * 2 + t.btnIcon + t.btnIconGap + measureTextPx(CTA_TEXT, '700', t.btnFont) + 2;
     const gaps = t.preDv + t.dv; // gap before divider + (1px bar + gap after divider)
 
     // Shared column 1 keeps the dividers aligned; if that would make the icon row too
     // wide (very long email address), each row gets its own natural column 1 instead.
     let col1E = Math.max(emailW, iconsW), col1I = col1E;
-    if(col1I + gaps + ctaW > t.budget){ col1E = emailW; col1I = iconsW; }
+    if(col1I + gaps + CTA_W > t.budget){ col1E = emailW; col1I = iconsW; }
 
     let css =
-      '.gl-name{font-size:' + t.name + 'px !important;line-height:' + Math.round(t.name * 1.25) + 'px !important;padding-bottom:10px !important;}' +
-      '.gl-title{font-size:' + t.title + 'px !important;line-height:' + Math.round(t.title * 1.4) + 'px !important;padding-bottom:10px !important;}' +
-      '.gl-tx{font-size:' + t.text + 'px !important;line-height:20px !important;}' +
       '.gl-ce{width:' + Math.ceil(col1E) + 'px !important;padding-right:' + t.preDv + 'px !important;}' +
       '.gl-ci{width:' + Math.ceil(col1I) + 'px !important;padding-right:' + t.preDv + 'px !important;}' +
       '.gl-dv{width:1px !important;padding-right:' + (t.dv - 1) + 'px !important;}' +
       '.gl-ic{width:' + t.icon + 'px !important;height:' + t.icon + 'px !important;}' +
-      '.gl-ig{padding-right:' + t.iconGap + 'px !important;}' +
-      '.gl-rh{height:auto !important;}' +
-      '.gl-cti{width:' + Math.round(ctaW) + 'px !important;height:' + Math.round(ctaW * CTA_H / CTA_W) + 'px !important;}';
+      '.gl-ig{padding-right:' + t.iconGap + 'px !important;}';
 
-    // Only an exceptionally long email can't share a line with the phone at a readable
-    // size — in that one case put the phone under the email rather than shrink text.
+    // Only an exceptionally long email can't share a line with the phone — in that one
+    // case put the phone under the email rather than shrink the text.
     if(emailW + gaps + phoneW > t.budget){
       css +=
         '.gl-ct td{display:block !important;width:auto !important;}' +
@@ -407,8 +399,8 @@
   //  1. Rows never break — each row is one nowrap table, so email | phone and
   //     icons | button always stay side by side, exactly like the desktop design.
   //  2. Mail clients that honour media queries (Apple Mail, iOS Mail, Outlook mobile,
-  //     Samsung Mail…) scale the text, icons and button down on phones so each row fits.
-  //  3. The banner is fluid (width:100%, max-width:550px) and shrinks with the screen.
+  //     Samsung Mail…) tighten the icons and divider gaps on phones so each row fits.
+  //  3. The banner is fluid (width:100%, max-width:552px) and shrinks with the screen.
   function buildSignatureHTML(data, banner){
     const name = escapeHtml(data.name || "[Full Name]");
     const title = escapeHtml(data.title || "[Job Title]");
@@ -416,23 +408,24 @@
     const phone = escapeHtml(data.phone || "+1 (000) 000-0000");
     const telHref = escapeHtml(telDigits(data.phone || "+10000000000"));
 
-    // Column 1 is normally 184px (the icon row + a 26px gap before the divider), but if the
-    // real email address would be wider than that, the column grows just enough to
+    // Column 1 is normally 176px (the 152px icon row + a 24px gap before the divider), but
+    // if the real email address would be wider than that, the column grows just enough to
     // fit it fully — so short emails stay perfectly aligned with the icon row below,
     // and long emails are never clipped, at the cost of alignment only in that case.
     const rawEmail = data.email || "name@getlevrg.com";
     const rawPhone = data.phone || "+1 (000) 000-0000";
-    const measuredEmailWidth = measureTextPx(rawEmail, 'normal', 15);
-    const col1Width = Math.max(184, measuredEmailWidth + 26);
+    const measuredEmailWidth = measureTextPx(rawEmail, 'normal', TEXT);
+    const col1Width = Math.max(176, Math.ceil((measuredEmailWidth + 24) / 4) * 4);
     // Gaps around the dividers: MIN_GAP is cell padding, which Gmail / Outlook can never
     // squeeze away on a narrow phone (plain width can be — that caused touching dividers).
-    const MIN_GAP = 18;
+    // Wide screens get the full 24px (16px padding + 8px flexible width).
+    const MIN_GAP = 16;
     const col1Inner = col1Width - MIN_GAP;
     const DV = 'class="gl-dv" width="9" valign="middle" style="width:9px;padding-right:' + MIN_GAP + 'px;vertical-align:middle;"';
 
     const FONT = 'font-family:Inter, Arial, Helvetica, sans-serif;';
     const T = 'cellpadding="0" cellspacing="0" border="0" role="presentation"';
-    const TX = FONT + 'font-size:15px;line-height:22px;color:#151515;white-space:nowrap;';
+    const TX = FONT + 'font-size:12px;line-height:16px;color:#151515;white-space:nowrap;';
 
     return (
       '<style type="text/css">' + TIERS.map(t => tierCSS(t, rawEmail, rawPhone)).join('') + '</style>' +
@@ -440,20 +433,20 @@
       '<table ' + T + ' width="100%" style="' + FONT + 'width:100%;max-width:600px;border-collapse:collapse;">' +
 
         // Name (no underline bar beneath it)
-        '<tr><td class="gl-name" style="' + FONT + 'font-size:26px;line-height:32px;font-weight:800;color:#23590C;padding-bottom:12px;">' + name + '</td></tr>' +
+        '<tr><td class="gl-name" style="' + FONT + 'font-size:18px;line-height:24px;font-weight:800;color:#23590C;padding-bottom:4px;">' + name + '</td></tr>' +
 
         // Job title line — all black
-        '<tr><td class="gl-title" style="' + FONT + 'font-size:16px;line-height:22px;font-weight:700;color:#151515;padding-bottom:12px;">' +
+        '<tr><td class="gl-title" style="' + FONT + 'font-size:16px;line-height:20px;font-weight:700;color:#151515;padding-bottom:12px;">' +
           title + '&nbsp;&nbsp;&middot;&nbsp;&nbsp;Get&nbsp;Levrg' +
         '</td></tr>' +
 
         // Contact line — email (column 1) | divider | phone, kept on one line
-        '<tr><td style="padding-bottom:18px;">' +
+        '<tr><td style="padding-bottom:16px;">' +
           '<table ' + T + ' class="gl-ct" style="border-collapse:collapse;white-space:nowrap;"><tr>' +
             '<td class="gl-ce gl-tx" nowrap width="' + col1Inner + '" valign="middle" style="width:' + col1Inner + 'px;padding-right:' + MIN_GAP + 'px;vertical-align:middle;' + TX + '">' +
               '<a href="mailto:' + email + '" style="color:#151515;text-decoration:none;white-space:nowrap;">' + email + '</a>' +
             '</td>' +
-            '<td ' + DV + '>' + divider(14) + '</td>' +
+            '<td ' + DV + '>' + divider(12) + '</td>' +
             '<td class="gl-tx" nowrap valign="middle" style="vertical-align:middle;' + TX + '">' +
               '<a href="tel:' + telHref + '" style="color:#151515;text-decoration:none;white-space:nowrap;">' + nbsp(phone) + '</a>' +
             '</td>' +
@@ -463,33 +456,33 @@
         // Icon row — the 4 icons (same column 1 width as the email) | divider | CTA button
         '<tr><td>' +
           '<table ' + T + ' style="border-collapse:collapse;white-space:nowrap;"><tr>' +
-            '<td class="gl-ci gl-rh" width="' + col1Inner + '" height="40" valign="middle" style="width:' + col1Inner + 'px;height:40px;padding-right:' + MIN_GAP + 'px;vertical-align:middle;">' +
+            '<td class="gl-ci" width="' + col1Inner + '" height="32" valign="middle" style="width:' + col1Inner + 'px;height:32px;padding-right:' + MIN_GAP + 'px;vertical-align:middle;">' +
               '<table ' + T + '><tr>' +
-                '<td class="gl-ig" valign="middle" style="vertical-align:middle;padding-right:10px;"><a href="https://www.linkedin.com/company/get-levrg/" style="text-decoration:none;">' + iconImg(IC_LINKEDIN, 'LinkedIn', 'gl-ic') + '</a></td>' +
-                '<td class="gl-ig" valign="middle" style="vertical-align:middle;padding-right:10px;"><a href="https://www.facebook.com/getlevrg/" style="text-decoration:none;">' + iconImg(IC_FACEBOOK, 'Facebook', 'gl-ic') + '</a></td>' +
-                '<td class="gl-ig" valign="middle" style="vertical-align:middle;padding-right:10px;"><a href="https://www.instagram.com/getlevrg/" style="text-decoration:none;">' + iconImg(IC_INSTAGRAM, 'Instagram', 'gl-ic') + '</a></td>' +
+                '<td class="gl-ig" valign="middle" style="vertical-align:middle;padding-right:8px;"><a href="https://www.linkedin.com/company/get-levrg/" style="text-decoration:none;">' + iconImg(IC_LINKEDIN, 'LinkedIn', 'gl-ic') + '</a></td>' +
+                '<td class="gl-ig" valign="middle" style="vertical-align:middle;padding-right:8px;"><a href="https://www.facebook.com/getlevrg/" style="text-decoration:none;">' + iconImg(IC_FACEBOOK, 'Facebook', 'gl-ic') + '</a></td>' +
+                '<td class="gl-ig" valign="middle" style="vertical-align:middle;padding-right:8px;"><a href="https://www.instagram.com/getlevrg/" style="text-decoration:none;">' + iconImg(IC_INSTAGRAM, 'Instagram', 'gl-ic') + '</a></td>' +
                 '<td valign="middle" style="vertical-align:middle;"><a href="https://getlevrg.com/" style="text-decoration:none;">' + iconImg(IC_WEBSITE, 'Website', 'gl-ic') + '</a></td>' +
               '</tr></table>' +
             '</td>' +
-            '<td ' + DV + '>' + divider(22) + '</td>' +
+            '<td ' + DV + '>' + divider(24) + '</td>' +
             '<td nowrap valign="middle" style="vertical-align:middle;white-space:nowrap;line-height:0;">' +
-              // The button is a pre-rendered image (pill, gradient, icon and white label) rather
-              // than live text: Gmail / Outlook / Apple Mail dark modes recolour text but never
-              // images, so the label stays white everywhere and the pill shape is identical in
-              // every client. The alt text keeps it readable when images are blocked.
+              // The button is a pre-rendered image (pill, gradient, icon and white 12px label)
+              // rather than live text: Gmail / Outlook / Apple Mail dark modes recolour text but
+              // never images, so the label stays white everywhere and the pill shape is identical
+              // in every client. The alt text keeps it readable when images are blocked.
               '<a href="https://getlevrg.com/calendar/" style="text-decoration:none;display:block;">' +
                 '<img class="gl-cti" src="' + IC_CTA + '" width="' + CTA_W + '" height="' + CTA_H + '" alt="' + CTA_TEXT + '"' +
-                ' style="display:block;border:0;outline:none;width:' + CTA_W + 'px;height:' + CTA_H + 'px;' + FONT + 'font-size:14px;font-weight:700;color:#23590C;" />' +
+                ' style="display:block;border:0;outline:none;width:' + CTA_W + 'px;height:' + CTA_H + 'px;' + FONT + 'font-size:12px;font-weight:700;color:#23590C;" />' +
               '</a>' +
             '</td>' +
           '</tr></table>' +
         '</td></tr>' +
 
         (banner ?
-          // Banner — width attr keeps Outlook desktop at 550px; the inline styles make it
+          // Banner — width attr keeps Outlook desktop at 552px; the inline styles make it
           // shrink to the inbox width everywhere else.
-          '<tr><td style="padding-top:18px;">' +
-            '<img src="' + banner + '" width="550" alt="Get Levrg" style="display:block;border:0;border-radius:10px;width:100%;max-width:550px;height:auto;" />' +
+          '<tr><td style="padding-top:16px;">' +
+            '<img src="' + banner + '" width="552" alt="Get Levrg" style="display:block;border:0;border-radius:8px;width:100%;max-width:552px;height:auto;" />' +
           '</td></tr>'
         : '') +
 
@@ -510,8 +503,8 @@
   // queries and wrapping behave exactly as they will for recipients.
   const VIEWS = {
     desktop: { deviceWidth: 640, label: '· Desktop inbox (600px)', bar: 'Inbox — message preview' },
-    mobile:  { deviceWidth: 395, label: '· Mobile inbox (375px)',  bar: '9:41' },
-    small:   { deviceWidth: 340, label: '· Small phone (320px)',   bar: '9:41' },
+    mobile:  { deviceWidth: 391, label: '· Mobile inbox (375px)',  bar: '9:41' },
+    small:   { deviceWidth: 336, label: '· Small phone (320px)',   bar: '9:41' },
   };
   let currentView = 'desktop';
   const frame = document.getElementById('previewFrame');
@@ -526,8 +519,8 @@
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
     '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">' +
     '<style>html,body{margin:0;background:#fff;}body{padding:20px;font-family:Inter,Arial,Helvetica,sans-serif;color:#151515;}' +
-    '.mock{margin:0 0 22px;}.mock i{display:block;height:9px;border-radius:5px;background:#EEF0EC;margin-bottom:9px;}' +
-    '.sep{font-size:13px;color:#9aa096;margin:0 0 14px;}' +
+    '.mock{margin:0 0 24px;}.mock i{display:block;height:8px;border-radius:4px;background:#EEF0EC;margin-bottom:8px;}' +
+    '.sep{font-size:12px;line-height:16px;color:#9aa096;margin:0 0 16px;}' +
     '@media (max-width:480px){body{padding:16px;}}</style></head>' +
     '<body><div class="mock"><i style="width:38%"></i><i style="width:92%"></i><i style="width:84%"></i><i style="width:60%"></i></div>' +
     '<div class="sep">--</div><div id="sig"></div></body></html>';
